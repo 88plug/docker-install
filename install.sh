@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
+#Cleanup existing defaults
+sudo apt-get remove docker docker-engine docker.io containerd runc -y
+
 # This script is meant for quick & easy install via:
 #   $ curl -fsSL https://get.docker.com -o get-docker.sh
 #   $ sh get-docker.sh
@@ -380,7 +383,7 @@ do_install() {
 				if [ -n "$cli_pkg_version" ]; then
 					$sh_c "apt-get install -y -qq --no-install-recommends docker-ce-cli=$cli_pkg_version >/dev/null"
 				fi
-				$sh_c "apt-get install -y -qq --no-install-recommends docker-ce$pkg_version >/dev/null"
+				$sh_c "apt-get install -y -qq --no-install-recommends docker-ce$pkg_version containerd.io >/dev/null ; sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose ; sudo chmod +x /usr/local/bin/docker-compose"
 			)
 			echo_docker_as_nonroot
 			exit 0
